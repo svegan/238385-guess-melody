@@ -6,6 +6,8 @@ const sass = require('gulp-sass');
 const plumber = require('gulp-plumber');
 const postcss = require('gulp-postcss');
 const autoprefixer = require('autoprefixer');
+const sourcemaps = require('gulp-sourcemaps');
+const babel = require('gulp-babel');
 const server = require('browser-sync').create();
 const mqpacker = require('css-mqpacker');
 const minify = require('gulp-csso');
@@ -38,6 +40,11 @@ gulp.task('style', function () {
 gulp.task('scripts', function () {
   return gulp.src('js/**/*.js')
     .pipe(plumber())
+    .pipe(sourcemaps.init()) 
+    .pipe(babel({
+      presets: ['es2015']
+    })) 
+    .pipe(sourcemaps.write('.')) 
     .pipe(gulp.dest('build/js/'));
 });
 
