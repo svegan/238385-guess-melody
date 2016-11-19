@@ -6,8 +6,7 @@ const sass = require('gulp-sass');
 const plumber = require('gulp-plumber');
 const postcss = require('gulp-postcss');
 const autoprefixer = require('autoprefixer');
-const sourcemaps = require('gulp-sourcemaps');
-const babel = require('gulp-babel');
+const webpack = require('gulp-webpack');
 const server = require('browser-sync').create();
 const mqpacker = require('css-mqpacker');
 const minify = require('gulp-csso');
@@ -38,13 +37,20 @@ gulp.task('style', function () {
 });
 
 gulp.task('scripts', function () {
-  return gulp.src('js/**/*.js')
+  return gulp.src('js/main.js')
     .pipe(plumber())
-    .pipe(sourcemaps.init()) 
-    .pipe(babel({
-      presets: ['es2015']
-    })) 
-    .pipe(sourcemaps.write('.')) 
+    .pipe(webpack({
+      output: {
+        filename: 'main.js',
+      },
+      devtool: 'source-map',
+      module: {
+        loaders: [{
+            test: /\.js$/,
+            exclude: ['node_modules', 'build'],
+            loader: 'babel-loader?presets[]=es2015'
+      }]
+    }}))
     .pipe(gulp.dest('build/js/'));
 });
 
@@ -70,7 +76,11 @@ gulp.task('copy-html', function () {
 gulp.task('copy', ['copy-html', 'scripts', 'style'], function () {
   return gulp.src([
     'fonts/**/*.{woff,woff2}',
-    'img/*.*'
+    'img/*.*',
+    'js/animate.js',
+    'js/player.js',
+    'js/time-format.js',
+    'js/timer.js'
   ], {base: '.'})
     .pipe(gulp.dest('build'));
 });
@@ -85,7 +95,8 @@ gulp.task('serve', ['assemble'], function () {
     notify: false,
     open: true,
     port: 3501,
-    ui: false
+    ui: false,
+    browser: "google chrome"
   });
 
   gulp.watch('sass/**/*.{scss,sass}', ['style']);
