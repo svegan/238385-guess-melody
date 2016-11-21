@@ -95,8 +95,7 @@ gulp.task('serve', ['assemble'], function () {
     notify: false,
     open: true,
     port: 3501,
-    ui: false,
-    browser: "google chrome"
+    ui: false
   });
 
   gulp.watch('sass/**/*.{scss,sass}', ['style']);
