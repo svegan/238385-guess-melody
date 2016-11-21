@@ -1,4 +1,6 @@
 import getElement from './parse-template';
+import renderUI from './render-interface';
+import genre from './genre-template';
 
 let elem = getElement(`<section class="main main--level main--level-artist">
     <svg xmlns="http://www.w3.org/2000/svg" class="timer" viewBox="0 0 780 780">
@@ -46,5 +48,12 @@ let elem = getElement(`<section class="main main--level main--level-artist">
       </form>
     </div>
   </section>`);
+
+let form = elem.querySelector('.main-list');
+form.addEventListener('click', function (e) {
+  if (e.target.classList.contains('main-answer') || e.target.parentNode.classList.contains('main-answer')) {
+    renderUI(genre);
+  }
+}, true);
 
 export default elem;
