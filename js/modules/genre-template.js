@@ -1,4 +1,6 @@
 import getElement from './parse-template';
+import renderUI from './render-interface';
+import result from './result-template';
 
 let elem = getElement(`<section class="main main--level main--level-genre">
     <h2 class="title">Выберите инди-рок треки</h2>
@@ -27,8 +29,20 @@ let elem = getElement(`<section class="main main--level main--level-genre">
         <label class="genre-answer-check" for="a-4"></label>
       </div>
 
-      <button class="genre-answer-send" type="submit">Ответить</button>
+      <button class="genre-answer-send" type="submit" disabled>Ответить</button>
     </form>
   </section>`);
+
+const form = elem.querySelector('form.genre');
+const button = form.querySelector('.genre-answer-send');
+const checkInputs = () => {
+  button.disabled = form.querySelectorAll('input[name="answer"]:checked').length === 0;
+};
+
+form.addEventListener('click', checkInputs);
+button.addEventListener('click', (e) => {
+  e.preventDefault();
+  renderUI(result);
+});
 
 export default elem;

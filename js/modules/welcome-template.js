@@ -1,4 +1,6 @@
 import getElement from './parse-template';
+import renderUI from './render-interface';
+import artist from './artist-template';
 
 let elem = getElement(`<section class="main main--welcome">
     <section class="logo" title="Угадай мелодию"><h1>Угадай мелодию</h1></section>
@@ -11,5 +13,11 @@ let elem = getElement(`<section class="main main--welcome">
       Удачи!
     </p>
   </section>`);
+
+let playButton = elem.querySelector('.main-play');
+
+playButton.addEventListener('click', () => {
+  renderUI(artist);
+});
 
 export default elem;
