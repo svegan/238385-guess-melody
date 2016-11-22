@@ -34,16 +34,9 @@ let elem = getElement(`<section class="main main--level main--level-genre">
   </section>`);
 
 const form = elem.querySelector('form.genre');
-const inputs = form.querySelectorAll('input[name="answer"]');
 const button = form.querySelector('.genre-answer-send');
 const checkInputs = () => {
-  let anyChecked = false;
-  Array.prototype.forEach.call(inputs, (item) => {
-    if (item.checked === true) {
-      anyChecked = true;
-    }
-  });
-  button.disabled = !anyChecked;
+  button.disabled = form.querySelectorAll('input[name="answer"]:checked').length === 0;
 };
 
 form.addEventListener('click', checkInputs);
