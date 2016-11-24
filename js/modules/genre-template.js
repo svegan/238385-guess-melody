@@ -1,37 +1,31 @@
 import getElement from './parse-template';
 import renderUI from './render-interface';
 import result from './result-template';
+import data from '../data/genre-data';
 
-let elem = getElement(`<section class="main main--level main--level-genre">
-    <h2 class="title">Выберите инди-рок треки</h2>
+const genAnswerMarkup = (item) => {
+  return `<div class="genre-answer">
+    <div class="player-wrapper"></div>
+    <input type="checkbox" name="answer" value="${item.value}" id="${item.id}">
+    <label class="genre-answer-check" for="${item.id}"></label>
+  </div>`;
+};
+
+const answersMarkup = [];
+
+for (let answer of data.question.answers.values()) {
+  answersMarkup.push(genAnswerMarkup(answer));
+}
+
+const markup = `<section class="main main--level main--level-genre">
+    <h2 class="title">${data.question.title}</h2>
     <form class="genre">
-      <div class="genre-answer">
-        <div class="player-wrapper"></div>
-        <input type="checkbox" name="answer" value="answer-1" id="a-1">
-        <label class="genre-answer-check" for="a-1"></label>
-      </div>
-
-      <div class="genre-answer">
-        <div class="player-wrapper"></div>
-        <input type="checkbox" name="answer" value="answer-1" id="a-2">
-        <label class="genre-answer-check" for="a-2"></label>
-      </div>
-
-      <div class="genre-answer">
-        <div class="player-wrapper"></div>
-        <input type="checkbox" name="answer" value="answer-1" id="a-3">
-        <label class="genre-answer-check" for="a-3"></label>
-      </div>
-
-      <div class="genre-answer">
-        <div class="player-wrapper"></div>
-        <input type="checkbox" name="answer" value="answer-1" id="a-4">
-        <label class="genre-answer-check" for="a-4"></label>
-      </div>
-
+      ${answersMarkup.join('')}
       <button class="genre-answer-send" type="submit" disabled>Ответить</button>
     </form>
-  </section>`);
+  </section>`;
+
+let elem = getElement(markup);
 
 const form = elem.querySelector('form.genre');
 const button = form.querySelector('.genre-answer-send');
