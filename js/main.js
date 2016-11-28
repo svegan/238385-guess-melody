@@ -1,4 +1,3 @@
-import welcome from './modules/welcome-template';
-import renderUI from './modules/render-interface';
+import {play} from './modules/utils';
 
-renderUI(welcome);
+play();
