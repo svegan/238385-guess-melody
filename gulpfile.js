@@ -7,11 +7,14 @@ const plumber = require('gulp-plumber');
 const postcss = require('gulp-postcss');
 const autoprefixer = require('autoprefixer');
 const webpack = require('gulp-webpack');
+const mocha = require('gulp-mocha');
 const server = require('browser-sync').create();
 const mqpacker = require('css-mqpacker');
 const minify = require('gulp-csso');
 const rename = require('gulp-rename');
 const imagemin = require('gulp-imagemin');
+
+require('babel-register');
 
 gulp.task('style', function () {
   gulp.src('sass/style.scss')
@@ -55,6 +58,14 @@ gulp.task('scripts', function () {
 });
 
 gulp.task('test', function () {
+  return gulp
+    .src(['js/**/*.test.js'], { read: false })
+    .pipe(mocha({
+      compilers: {
+        js: 'babel-register'
+      },
+      reporter: 'spec'
+    }));
 });
 
 gulp.task('imagemin', ['copy'], function () {
