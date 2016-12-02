@@ -1,5 +1,7 @@
-import {renderUI, createElement, questionHandler} from './utils';
-import {mainTitle, svg} from './templates';
+import {renderUI, createElement} from './utils';
+import {mainTitle, timer} from './templates';
+import {setTime, resetTime, wrongAnswerFn, correctAnswerFn} from './game-controls';
+import Timer from './timer';
 
 const genAnswerMarkup = (item, index) => {
   let curIndex = index + 1;
@@ -12,10 +14,10 @@ const genAnswerMarkup = (item, index) => {
   </div>`;
 };
 
-export default (data) => {
+export default (data, progress) => {
 
   const markup = `<section class="main main--level main--level-artist">
-      ${svg}
+      ${timer}
       <div class="main-wrap">
         <div class="main-timer"></div>
         ${mainTitle(data.title)}
@@ -28,12 +30,27 @@ export default (data) => {
 
   const elem = createElement(markup);
   const form = elem.querySelector('.main-list');
+  const timerElem = elem.querySelector('.timer-value');
+  const timerObj = new Timer(timerElem, progress.leftTime, function () {
+    progress = resetTime(progress);
+    timerObj.remove();
+    wrongAnswerFn(progress);
+  });
+
   form.addEventListener('click', function (e) {
     if (e.target.classList.contains('main-answer') || e.target.parentNode.classList.contains('main-answer')) {
-      questionHandler()();
+      timerObj.stop();
+      progress = setTime(progress, timerObj.getLeftTime());
+      timerObj.remove();
+      if (form[`${data.correct - 1}`].checked) {
+        wrongAnswerFn(progress);
+      } else {
+        correctAnswerFn(progress);
+      }
     }
   }, true);
 
   renderUI(elem);
+  timerObj.start();
   return elem;
 };

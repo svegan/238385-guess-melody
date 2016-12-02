@@ -1,5 +1,6 @@
-import {renderUI, createElement, questionHandler} from './utils';
+import {renderUI, createElement} from './utils';
 import {title} from './templates';
+import {nextScreen} from './game-controls';
 
 const genAnswerMarkup = (answer) => {
   return `<div class="genre-answer">
@@ -9,7 +10,7 @@ const genAnswerMarkup = (answer) => {
   </div>`;
 };
 
-export default (data) => {
+export default (data, progress) => {
 
   const answersMarkup = [];
 
@@ -36,7 +37,7 @@ export default (data) => {
   form.addEventListener('click', checkInputs);
   button.addEventListener('click', (e) => {
     e.preventDefault();
-    questionHandler()();
+    nextScreen(progress);
   });
 
   renderUI(elem);

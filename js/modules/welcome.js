@@ -1,5 +1,6 @@
-import {renderUI, createElement, questionHandler} from './utils';
-import {content as caption} from './data';
+import {renderUI, createElement} from './utils';
+import {play} from './game-controls';
+import {content as caption} from '../data/game-data';
 import {logo, mainTitle} from './templates';
 
 export default (data) => {
@@ -12,7 +13,7 @@ export default (data) => {
 
   const elem = createElement(markup);
   const playButton = elem.querySelector('.main-play');
-  playButton.addEventListener('click', questionHandler());
+  playButton.addEventListener('click', play);
   renderUI(elem);
   return elem;
 };

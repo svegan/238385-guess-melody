@@ -1,3 +1,3 @@
-import {play} from './modules/utils';
+import {init} from './modules/game-controls';
 
-play();
+init();

@@ -1,6 +1,7 @@
-import {renderUI, createElement, play} from './utils';
-import {content as caption} from './data';
+import {renderUI, createElement} from './utils';
+import {content as caption} from '../data/game-data';
 import {logo, title} from './templates';
+import {init} from './game-controls';
 
 export default (data) => {
 
@@ -13,8 +14,8 @@ export default (data) => {
   </section>`;
 
   const elem = createElement(markup);
-  const playButton = elem.querySelector('.main-replay');
-  playButton.addEventListener('click', play);
+  const replay = elem.querySelector('.main-replay');
+  replay.addEventListener('click', init);
   renderUI(elem);
   return elem;
 };
