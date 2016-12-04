@@ -37,17 +37,16 @@ export default (data, progress) => {
     wrongAnswerFn(progress);
   });
 
-  form.addEventListener('click', function (e) {
-    if (e.target.classList.contains('main-answer') || e.target.parentNode.classList.contains('main-answer')) {
-      timerObj.stop();
-      progress = setTime(progress, timerObj.getLeftTime());
-      timerObj.remove();
-      if (form[`${data.correct - 1}`].checked) {
-        wrongAnswerFn(progress);
-      } else {
-        correctAnswerFn(progress);
-      }
+  form.addEventListener('change', function (e) {
+    timerObj.stop();
+    progress = setTime(progress, timerObj.getLeftTime());
+    timerObj.remove();
+    if (form[data.correct - 1].checked) {
+      correctAnswerFn(progress);
+    } else {
+      wrongAnswerFn(progress);
     }
+    // debugger;
   }, true);
 
   renderUI(elem);

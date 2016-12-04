@@ -4,7 +4,7 @@ import {setLifes, setQue, setTime} from './data-controls';
 
 describe('Data control functions', () => {
   describe('Amount of lifes changing function', () => {
-    it('Param shouldn\'t be more than 3 or less than 0', function () {
+    it('Param shouldn\'t be more than 3 or less than 1', function () {
       assert.throws(() => {
         setLifes(initProgress, 4);
       });

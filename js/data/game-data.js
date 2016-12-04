@@ -41,7 +41,7 @@ const gameData = {
       title: 'Как звали отца исполнителя',
       answers: ['Пётр', 'Валерий', 'Дмитрий'],
       audio: null,
-      correct: 3
+      correct: 1
     },
     {
       type: 'artist',
@@ -72,8 +72,8 @@ const gameData = {
         }
       ]),
       correct: new Set([
-        'a-2',
-        'a-3'
+        'a-1',
+        'a-2'
       ])
     },
     {
@@ -98,7 +98,7 @@ const gameData = {
         }
       ]),
       correct: new Set([
-        'a-5',
+        'a-6',
         'a-7'
       ])
     },
@@ -124,7 +124,7 @@ const gameData = {
         }
       ]),
       correct: new Set([
-        'a-10',
+        'a-11',
         'a-12'
       ])
     },
@@ -150,8 +150,8 @@ const gameData = {
         }
       ]),
       correct: new Set([
-        'a-14',
-        'a-15'
+        'a-13',
+        'a-14'
       ])
     },
     {
@@ -176,20 +176,14 @@ const gameData = {
         }
       ]),
       correct: new Set([
-        'a-17',
-        'a-20'
+        'a-18',
+        'a-19'
       ])
     }
-  ],
-  stats: {
-    minutes: '2',
-    melodies: '4',
-    betterThan: '80%'
-  }
+  ]
 };
 
 const content = gameData.content;
 const questions = gameData.questions;
-const stats = gameData.stats;
 
-export {content, questions, stats};
+export {content, questions};

@@ -2,7 +2,7 @@ import showWelcome from './welcome';
 import showArtist from './artist';
 import showGenre from './genre';
 import showResult from './result';
-import {content, questions, stats} from '../data/game-data';
+import {content, questions} from '../data/game-data';
 import {initProgress} from '../data/progress-data';
 import {setQue, setTime, setLifes} from './data-controls';
 
@@ -14,7 +14,7 @@ const nextScreen = (data) => {
   try {
     data = setQue(data, data.currentQue + 1);
   } catch (e) {
-    showResult(stats);
+    showResult(data);
     return;
   }
 
@@ -32,11 +32,11 @@ const nextScreen = (data) => {
 };
 
 const play = () => {
-  nextScreen(setQue(initProgress, 0));
+  nextScreen(initProgress);
 };
 
 const correctAnswerFn = (data) => {
-  data.questions.correct++;
+  data.correctQues++;
   nextScreen(data);
 };
 
@@ -45,7 +45,7 @@ const wrongAnswerFn = (data) => {
     data = setLifes(data, data.lifes - 1);
     nextScreen(data);
   } catch (e) {
-    showResult(stats);
+    showResult(data);
   }
 };
 
@@ -53,4 +53,4 @@ const resetTime = (data) => {
   return setTime(data, initProgress.leftTime);
 };
 
-export {init, play, nextScreen, wrongAnswerFn, correctAnswerFn, resetTime, setTime};
+export {initProgress, init, play, nextScreen, wrongAnswerFn, correctAnswerFn, resetTime, setTime};

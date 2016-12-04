@@ -1,13 +1,13 @@
 const setLifes = (data, num) => {
-  if (num < 0 || num > 3) {
-    throw new Error('Num shouldn\'t be more than 3 or less than 0');
+  if (num <= 0 || num > 3) {
+    throw new Error('Num shouldn\'t be more than 3 or less than 1');
   }
   return Object.assign({}, data, {lifes: num});
 };
 
 const setQue = (data, num) => {
-  if (num < 0 || num > data.questions.total) {
-    throw new Error(`Num shouldn\'t be more than ${data.questions.total} or less than 0`);
+  if (num < 0 || num > data.totalQues) {
+    throw new Error(`Num shouldn\'t be more than ${data.totalQues} or less than 0`);
   }
   return Object.assign({}, data, {currentQue: num});
 };
