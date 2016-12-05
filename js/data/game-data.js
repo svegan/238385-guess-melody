@@ -14,36 +14,41 @@ const gameData = {
       }
     }
   },
-  questions: new Set([
+  questions: [
     {
       type: 'artist',
       title: 'Кто исполняет эту песню?',
       answers: ['Пелагея', 'Краснознаменная дивизия имени моей бабушки', 'Lorde'],
-      audio: null
+      audio: null,
+      correct: 1
     },
     {
       type: 'artist',
       title: 'Чей это ремейк?',
       answers: ['Ishome', 'The Queen', 'Muse'],
-      audio: null
+      audio: null,
+      correct: 2
     },
     {
       type: 'artist',
       title: 'В каком году вышла эта песня?',
       answers: ['1960', '1970', '1980'],
-      audio: null
+      audio: null,
+      correct: 3
     },
     {
       type: 'artist',
       title: 'Как звали отца исполнителя',
       answers: ['Пётр', 'Валерий', 'Дмитрий'],
-      audio: null
+      audio: null,
+      correct: 1
     },
     {
       type: 'artist',
       title: 'Ещё 1 вопрос',
       answers: ['1 ответ', '2 ответ', '3-ий'],
-      audio: null
+      audio: null,
+      correct: 2
     },
     {
       type: 'genre',
@@ -65,6 +70,10 @@ const gameData = {
           value: 'answer-4',
           id: 'a-4'
         }
+      ]),
+      correct: new Set([
+        'a-1',
+        'a-2'
       ])
     },
     {
@@ -87,6 +96,10 @@ const gameData = {
           value: 'answer-8',
           id: 'a-8'
         }
+      ]),
+      correct: new Set([
+        'a-6',
+        'a-7'
       ])
     },
     {
@@ -109,6 +122,10 @@ const gameData = {
           value: 'answer-12',
           id: 'a-12'
         }
+      ]),
+      correct: new Set([
+        'a-11',
+        'a-12'
       ])
     },
     {
@@ -131,6 +148,10 @@ const gameData = {
           value: 'answer-16',
           id: 'a-16'
         }
+      ]),
+      correct: new Set([
+        'a-13',
+        'a-14'
       ])
     },
     {
@@ -153,18 +174,16 @@ const gameData = {
           value: 'answer-20',
           id: 'a-20'
         }
+      ]),
+      correct: new Set([
+        'a-18',
+        'a-19'
       ])
     }
-  ]),
-  stats: {
-    minutes: '2',
-    melodies: '4',
-    betterThan: '80%'
-  }
+  ]
 };
 
 const content = gameData.content;
 const questions = gameData.questions;
-const stats = gameData.stats;
 
-export {content, questions, stats};
+export {content, questions};

@@ -1,5 +1,6 @@
-import {renderUI, createElement, questionHandler} from './utils';
+import {renderUI, createElement} from './utils';
 import {title} from './templates';
+import {wrongAnswerFn, correctAnswerFn} from './game-controls';
 
 const genAnswerMarkup = (answer) => {
   return `<div class="genre-answer">
@@ -9,7 +10,20 @@ const genAnswerMarkup = (answer) => {
   </div>`;
 };
 
-export default (data) => {
+const checkIfCorrect = (form, correctAnswers) => {
+  const checkedInputs = form.querySelectorAll('input:checked');
+  if (checkedInputs.length !== correctAnswers.size) {
+    return false;
+  }
+  for (let input of checkedInputs) {
+    if (!correctAnswers.has(input.id)) {
+      return false;
+    }
+  }
+  return true;
+};
+
+export default (data, progress) => {
 
   const answersMarkup = [];
 
@@ -36,7 +50,11 @@ export default (data) => {
   form.addEventListener('click', checkInputs);
   button.addEventListener('click', (e) => {
     e.preventDefault();
-    questionHandler()();
+    if (checkIfCorrect(form, data.correct)) {
+      correctAnswerFn(progress);
+    } else {
+      wrongAnswerFn(progress);
+    }
   });
 
   renderUI(elem);
