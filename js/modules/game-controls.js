@@ -1,30 +1,32 @@
-import showWelcome from './welcome';
-import showArtist from './artist';
-import showGenre from './genre';
-import showResult from './result';
+import {Welcome, Artist, Genre, Result} from '../screens/screens';
 import {content, questions} from '../data/game-data';
 import {initProgress} from '../data/progress-data';
 import {setQue, setTime, setLifes} from './data-controls';
+import {renderUI} from './utils';
 
 const init = () => {
-  showWelcome(content.screens.welcome);
+  const welcome = new Welcome(content.screens.welcome);
+  renderUI(welcome.elem);
 };
 
 const nextScreen = (data) => {
   try {
     data = setQue(data, data.currentQue + 1);
   } catch (e) {
-    showResult(data);
+    const result = new Result(data);
+    renderUI(result.elem);
     return;
   }
 
   let queIndex = data.currentQue - 1;
   switch (questions[queIndex].type) {
     case 'artist':
-      showArtist(questions[queIndex], data);
+      const artist = new Artist(questions[queIndex], data);
+      renderUI(artist.elem);
       break;
     case 'genre':
-      showGenre(questions[queIndex], data);
+      const genre = new Genre(questions[queIndex], data);
+      renderUI(genre.elem);
       break;
     default:
       return;
@@ -45,7 +47,8 @@ const wrongAnswerFn = (data) => {
     data = setLifes(data, data.lifes - 1);
     nextScreen(data);
   } catch (e) {
-    showResult(data);
+    const result = new Result(data);
+    renderUI(result.elem);
   }
 };
 
