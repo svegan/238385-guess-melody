@@ -1,4 +1,4 @@
-export const initProgress = {
+export default {
   lifes: 3,
   leftTime: 120,
   currentQue: 0,

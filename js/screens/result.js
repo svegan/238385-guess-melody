@@ -1,7 +1,7 @@
 import AbstractView from './common';
 import {content as caption} from '../data/game-data';
 import {logo, title} from '../modules/templates';
-import {initProgress, init} from '../modules/game-controls';
+import {initState, init} from '../modules/game-controls';
 import commonStat from '../data/statistic-data';
 
 const compareFn = (progress, lastResult) => {
@@ -17,12 +17,11 @@ const compareFn = (progress, lastResult) => {
   });
   const currIndex = newResult.indexOf(result);
   const betterThan = `${Math.round((newResult.length - currIndex) / newResult.length * 100)}%`;
-  const report = {
+  return {
     betterThan,
-    minutes: Math.floor((initProgress.leftTime - progress.leftTime) / 60),
+    minutes: Math.floor((initState.leftTime - progress.leftTime) / 60),
     melodies: progress.correctQues
   };
-  return report;
 };
 
 export default class Result extends AbstractView {
@@ -30,7 +29,6 @@ export default class Result extends AbstractView {
     super();
     this.data = data;
     this.report = compareFn(data, commonStat);
-    this.replay = this.elem.querySelector('.main-replay');
   }
 
   getMarkup() {
@@ -43,6 +41,7 @@ export default class Result extends AbstractView {
     </section>`;
   }
   bindHandlers() {
+    this.replay = this.elem.querySelector('.main-replay');
     this.replay.addEventListener('click', init);
   }
 

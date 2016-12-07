@@ -7,7 +7,6 @@ export default class Welcome extends AbstractView {
   constructor(data) {
     super();
     this.data = data;
-    this.playButton = this.elem.querySelector('.main-play');
   }
 
   getMarkup() {
@@ -20,6 +19,7 @@ export default class Welcome extends AbstractView {
   }
 
   bindHandlers() {
+    this.playButton = this.elem.querySelector('.main-play');
     this.playButton.addEventListener('click', play);
   }
 

@@ -19,6 +19,7 @@ export default class Artist extends AbstractView {
     super();
     this.data = data;
     this.progress = progress;
+    this._applyTimer();
   }
 
   getMarkup() {
@@ -37,22 +38,25 @@ export default class Artist extends AbstractView {
 
   bindHandlers() {
     const form = this.elem.querySelector('.main-list');
-    const timerElem = this.elem.querySelector('.timer-value');
-    const timerObj = new Timer(timerElem, this.progress.leftTime, () => {
-      this.progress = resetTime(this.progress);
-      timerObj.remove();
-      wrongAnswerFn(this.progress);
-    });
     form.addEventListener('change', (e) => {
-      timerObj.stop();
-      this.progress = setTime(this.progress, timerObj.getLeftTime());
-      timerObj.remove();
+      this.timerObj.stop();
+      this.progress = setTime(this.progress, this.timerObj.getLeftTime());
+      this.timerObj.remove();
       if (form[this.data.correct - 1].checked) {
         correctAnswerFn(this.progress);
       } else {
         wrongAnswerFn(this.progress);
       }
     }, true);
-    timerObj.start();
+  }
+
+  _applyTimer() {
+    this.timerElem = this.elem.querySelector('.timer-value');
+    this.timerObj = new Timer(this.timerElem, this.progress.leftTime, () => {
+      this.progress = resetTime(this.progress);
+      this.timerObj.remove();
+      wrongAnswerFn(this.progress);
+    });
+    this.timerObj.start();
   }
 }

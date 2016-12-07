@@ -1,6 +1,6 @@
 import {Welcome, Artist, Genre, Result} from '../screens/screens';
 import {content, questions} from '../data/game-data';
-import {initProgress} from '../data/progress-data';
+import initState from '../data/init-state';
 import {setQue, setTime, setLifes} from './data-controls';
 import {renderUI} from './utils';
 
@@ -34,7 +34,7 @@ const nextScreen = (data) => {
 };
 
 const play = () => {
-  nextScreen(initProgress);
+  nextScreen(initState);
 };
 
 const correctAnswerFn = (data) => {
@@ -53,7 +53,7 @@ const wrongAnswerFn = (data) => {
 };
 
 const resetTime = (data) => {
-  return setTime(data, initProgress.leftTime);
+  return setTime(data, initState.leftTime);
 };
 
-export {initProgress, init, play, nextScreen, wrongAnswerFn, correctAnswerFn, resetTime, setTime};
+export {initState, init, play, nextScreen, wrongAnswerFn, correctAnswerFn, resetTime, setTime};

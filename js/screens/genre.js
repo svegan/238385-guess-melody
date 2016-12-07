@@ -28,8 +28,6 @@ export default class Genre extends AbstractView {
     super();
     this.data = data;
     this.progress = progress;
-    this.form = this.elem.querySelector('form.genre');
-    this.buttom = this.form.querySelector('.genre-answer-send');
   }
 
   getMarkup() {
@@ -47,26 +45,18 @@ export default class Genre extends AbstractView {
   }
 
   bindHandlers() {
-    this.form.addEventListener('click', this._checkInputs);
-    this.button.addEventListener('click', this._onAnswer);
+    this.form = this.elem.querySelector('form.genre');
+    this.button = this.form.querySelector('.genre-answer-send');
+    this.form.addEventListener('click', () => {
+      this.button.disabled = this.form.querySelectorAll('input[name="answer"]:checked').length === 0;
+    });
+    this.button.addEventListener('click', (e) => {
+      e.preventDefault();
+      if (checkIfCorrect(this.form, this.data.correct)) {
+        correctAnswerFn(this.progress);
+      } else {
+        wrongAnswerFn(this.progress);
+      }
+    });
   }
-
-  clearHandlers() {
-    this.form.removeEventListener('click', this._checkInputs);
-    this.button.removeEventListener('click', this._onAnswer);
-  }
-
-  _onAnswer(e) {
-    e.preventDefault();
-    if (checkIfCorrect(this.form, this.data.correct)) {
-      correctAnswerFn(this.progress);
-    } else {
-      wrongAnswerFn(this.progress);
-    }
-  }
-
-  _checkInputs() {
-    this.button.disabled = this.form.querySelectorAll('input[name="answer"]:checked').length === 0;
-  }
-
 }
