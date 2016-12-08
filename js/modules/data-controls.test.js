@@ -18,15 +18,15 @@ describe('Data control functions', () => {
   });
 
   describe('Changing current question', () => {
-    it(`Param shouldn\'t be more than ${initProgress.questions.total} and less than 1`, () =>{
+    it(`Param shouldn\'t be more than ${initProgress.totalQues} and less than 1`, () =>{
       assert.throws(() => {
         setQue(initProgress, -1);
       });
       assert.throws(() => {
-        setQue(initProgress, initProgress.questions.total + 1);
+        setQue(initProgress, initProgress.totalQues + 1);
       });
       assert.doesNotThrow(() => {
-        setQue(initProgress, initProgress.questions.total - 1);
+        setQue(initProgress, initProgress.totalQues - 1);
       });
     });
   });
