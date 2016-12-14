@@ -1,4 +1,4 @@
-export {default as Welcome} from './welcome';
-export {default as Artist} from './artist';
-export {default as Genre} from './genre';
-export {default as Result} from './result';
+export {default as welcome} from './welcome';
+export {default as artist} from './artist';
+export {default as genre} from './genre';
+export {default as result} from './result';

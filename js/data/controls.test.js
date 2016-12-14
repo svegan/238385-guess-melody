@@ -1,10 +1,10 @@
 import assert from 'assert';
-import {initProgress} from '../data/progress-data';
-import {setLifes, setQue, setTime} from './data-controls';
+import initProgress from './init';
+import {setLifes, setQue, setTime, setCorrectAnswer} from './controls';
 
 describe('Data control functions', () => {
   describe('Amount of lifes changing function', () => {
-    it('Param shouldn\'t be more than 3 or less than 1', function () {
+    it('Param shouldn\'t be more than 3 or less than 0', function () {
       assert.throws(() => {
         setLifes(initProgress, 4);
       });
@@ -42,6 +42,20 @@ describe('Data control functions', () => {
       assert.doesNotThrow(() => {
         setTime(initProgress, 0);
       });
+    });
+  });
+});
+
+describe('Set right answer', () => {
+  it(`Param shouldn\'t be more than ${initProgress.totalQues + 1} and less than 1`, () =>{
+    assert.throws(() => {
+      setCorrectAnswer(initProgress, -1);
+    });
+    assert.throws(() => {
+      setCorrectAnswer(initProgress, initProgress.totalQues + 2);
+    });
+    assert.doesNotThrow(() => {
+      setCorrectAnswer(initProgress, initProgress.totalQues - 1);
     });
   });
 });

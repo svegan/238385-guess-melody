@@ -1,6 +1,5 @@
 import AbstractView from './common';
 import {title} from '../modules/templates';
-import {wrongAnswerFn, correctAnswerFn} from '../modules/game-controls';
 
 const genAnswerMarkup = (answer) => {
   return `<div class="genre-answer">
@@ -23,11 +22,10 @@ const checkIfCorrect = (form, correctAnswers) => {
   return true;
 };
 
-export default class Genre extends AbstractView {
-  constructor(data, progress) {
+class Genre extends AbstractView {
+  constructor(data) {
     super();
     this.data = data;
-    this.progress = progress;
   }
 
   getMarkup() {
@@ -44,6 +42,10 @@ export default class Genre extends AbstractView {
       </section>`;
   }
 
+  set onAnswer(handler) {
+    this._onAnswer = handler;
+  }
+
   bindHandlers() {
     this.form = this.elem.querySelector('form.genre');
     this.button = this.form.querySelector('.genre-answer-send');
@@ -53,10 +55,12 @@ export default class Genre extends AbstractView {
     this.button.addEventListener('click', (e) => {
       e.preventDefault();
       if (checkIfCorrect(this.form, this.data.correct)) {
-        correctAnswerFn(this.progress);
+        this._onAnswer(true);
       } else {
-        wrongAnswerFn(this.progress);
+        this._onAnswer(false);
       }
     });
   }
 }
+
+export default (data) => new Genre(data);
