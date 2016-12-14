@@ -1,3 +1,3 @@
-import {init} from './modules/game-controls';
+import Application from './application';
 
-init();
+Application.showGreeting();

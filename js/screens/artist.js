@@ -1,6 +1,5 @@
 import AbstractView from './common';
 import {mainTitle, timer} from '../modules/templates';
-import {setTime, resetTime, wrongAnswerFn, correctAnswerFn} from '../modules/game-controls';
 import Timer from '../modules/timer';
 
 const genAnswerMarkup = (item, index) => {
@@ -14,12 +13,11 @@ const genAnswerMarkup = (item, index) => {
   </div>`;
 };
 
-export default class Artist extends AbstractView {
-  constructor(data, progress) {
+class Artist extends AbstractView {
+  constructor(data, time) {
     super();
     this.data = data;
-    this.progress = progress;
-    this._applyTimer();
+    this.initTime = time;
   }
 
   getMarkup() {
@@ -36,27 +34,33 @@ export default class Artist extends AbstractView {
       </section>`;
   }
 
+  set onAnswer(handler) {
+    this._onAnswer = handler;
+    this._applyTimer();
+  }
+
   bindHandlers() {
     const form = this.elem.querySelector('.main-list');
     form.addEventListener('change', (e) => {
       this.timerObj.stop();
-      this.progress = setTime(this.progress, this.timerObj.getLeftTime());
+      const time = this.timerObj.getLeftTime();
       this.timerObj.remove();
       if (form[this.data.correct - 1].checked) {
-        correctAnswerFn(this.progress);
+        this._onAnswer(true, time);
       } else {
-        wrongAnswerFn(this.progress);
+        this._onAnswer(false, time);
       }
     }, true);
   }
 
   _applyTimer() {
     this.timerElem = this.elem.querySelector('.timer-value');
-    this.timerObj = new Timer(this.timerElem, this.progress.leftTime, () => {
-      this.progress = resetTime(this.progress);
+    this.timerObj = new Timer(this.timerElem, this.initTime, () => {
       this.timerObj.remove();
-      wrongAnswerFn(this.progress);
+      this._onAnswer(false, 'reset');
     });
     this.timerObj.start();
   }
 }
+
+export default (data, time) => new Artist(data, time);

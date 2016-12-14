@@ -1,9 +1,12 @@
+import Application from '../application';
 import AbstractView from './common';
-import {play} from '../modules/game-controls';
-import {content as caption} from '../data/game-data';
 import {logo, mainTitle} from '../modules/templates';
 
-export default class Welcome extends AbstractView {
+const play = () => {
+  Application.showGame();
+};
+
+class Welcome extends AbstractView {
   constructor(data) {
     super();
     this.data = data;
@@ -11,10 +14,10 @@ export default class Welcome extends AbstractView {
 
   getMarkup() {
     return `<section class="main main--welcome">
-        ${logo(caption.title)}
+        ${logo(this.data.title)}
         <button class="main-play">Начать игру</button>
-        ${mainTitle(this.data.title)}
-        <p class="text main-text">${this.data.text}</p>
+        ${mainTitle(this.data.screens.welcome.title)}
+        <p class="text main-text">${this.data.screens.welcome.text}</p>
       </section>`;
   }
 
@@ -27,3 +30,5 @@ export default class Welcome extends AbstractView {
     this.playButton.removeEventListener('click', play);
   }
 }
+
+export default (data) => new Welcome(data);

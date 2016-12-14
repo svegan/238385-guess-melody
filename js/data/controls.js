@@ -1,6 +1,6 @@
 const setLifes = (data, num) => {
-  if (num <= 0 || num > 3) {
-    throw new Error('Num shouldn\'t be more than 3 or less than 1');
+  if (num < 0 || num > 3) {
+    throw new Error('Num shouldn\'t be more than 3 or less than 0');
   }
   return Object.assign({}, data, {lifes: num});
 };
@@ -19,4 +19,11 @@ const setTime = (data, time) => {
   return Object.assign({}, data, {leftTime: time});
 };
 
-export {setLifes, setQue, setTime};
+const setCorrectAnswer = (data, num) => {
+  if (num < 0 || num > data.totalQues + 1) {
+    throw new Error(`Num shouldn\'t be more than ${data.totalQues} or less than 0`);
+  }
+  return Object.assign({}, data, {correctQues: num});
+};
+
+export {setLifes, setQue, setTime, setCorrectAnswer};

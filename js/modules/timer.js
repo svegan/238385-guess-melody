@@ -52,12 +52,11 @@ Timer.prototype = {
     this.running = false;
   },
   remove: function () {
-    this.stop();
     this.elem = null;
     this.minutes = null;
     this.seconds = null;
     this.minVal = null;
-    this.secVall = null;
+    this.secVal = null;
     this.initDuration = null;
     this.duration = null;
     this.running = null;
