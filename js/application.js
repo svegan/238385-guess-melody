@@ -1,17 +1,26 @@
-import {default as game} from './modules/game';
-import {welcome, result as overView} from './screens/screens';
+import game from './modules/game';
+import {welcome, result} from './screens/screens';
 import {renderUI} from './modules/utils';
-import {content} from './data/game';
+import gameData from './data/game';
 import results from './data/results';
+
+const content = gameData.content;
+let questions;
 
 export default class Application {
   static showGreeting() {
     renderUI(welcome(content).elem);
   }
   static showGame() {
-    renderUI(game());
+    renderUI(game(questions));
   }
-  static showResult(result, initTime) {
-    renderUI(overView({content, result, results, initTime}).elem);
+  static showResult(currResult, initTime) {
+    renderUI(result({content, currResult, results, initTime}).elem);
+  }
+
+  static set questions(data) {
+    questions = data;
   }
 }
+
+export {renderUI, gameData};

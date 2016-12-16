@@ -1,12 +1,15 @@
-import Application from '../application';
+import Application, {renderUI, gameData} from '../application';
+// import gameData from '../data/game';
 import model from '../data/model';
-import {renderUI} from './utils';
-import {questions} from '../data/game';
 import {artist, genre} from '../screens/screens';
 
+const queTypes = gameData.questions.types;
+
 class GamePresenter {
-  constructor(GameModel) {
+  constructor(questions, GameModel) {
     this.data = GameModel;
+    this.data.questions = questions;
+    this.data.questionsAmount = this.data.questions.length;
     this.content = this.createLevel(this.data.currentQuestion);
   }
 
@@ -27,11 +30,12 @@ class GamePresenter {
   }
 
   createLevel(questionNumber) {
-    switch (questions[questionNumber].type) {
-      case 'artist':
-        return artist(questions[questionNumber], this.data.time);
-      case 'genre':
-        return genre(questions[questionNumber]);
+    switch (this.data.questions[questionNumber].type) {
+      case queTypes.ARTIST:
+        return artist(this.data.questions[questionNumber], this.data.time);
+      case queTypes.GENRE:
+        // console.log(this.data.questions[questionNumber]);
+        return genre(this.data.questions[questionNumber]);
       default:
         return false;
     }
@@ -82,9 +86,8 @@ class GamePresenter {
   }
 }
 
-const game = new GamePresenter(model);
-
-export default () => {
+export default (questions) => {
+  const game = new GamePresenter(questions, model);
   game.restart();
   return game.content.elem;
 };

@@ -1,4 +1,4 @@
-const gameData = {
+export default {
   content: {
     title: 'Угадай мелодию',
     screens: {
@@ -14,6 +14,24 @@ const gameData = {
       }
     }
   },
+  questions: {
+    types: {
+      GENRE: 'genre',
+      ARTIST: 'artist'
+    },
+    genres: {
+      COUNTRY: 'country',
+      BLUES: 'blues',
+      FOLK: 'folk',
+      CLASSICAL: 'classical',
+      ELECTRONIC: 'electronic',
+      HIP_HOP: 'hip-hop',
+      JAZZ: 'jazz',
+      POP: 'pop',
+      ROCK: 'rock'
+    }
+  }
+  /* ,
   questions: [
     {
       type: 'artist',
@@ -180,10 +198,5 @@ const gameData = {
         'a-19'
       ])
     }
-  ]
+  ]*/
 };
-
-const content = gameData.content;
-const questions = gameData.questions;
-
-export {content, questions};

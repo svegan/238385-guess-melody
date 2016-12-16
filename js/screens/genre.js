@@ -1,16 +1,17 @@
 import AbstractView from './common';
 import {title} from '../modules/templates';
 
-const genAnswerMarkup = (answer) => {
+const genAnswerMarkup = (answer, index) => {
   return `<div class="genre-answer">
   <div class="player-wrapper"></div>
-  <input type="checkbox" name="answer" value="${answer.value}" id="${answer.id}">
-  <label class="genre-answer-check" for="${answer.id}"></label>
+  <input type="checkbox" name="answer" value="${index}" id="${index}">
+  <label class="genre-answer-check" for="${index}"></label>
   </div>`;
 };
 
-const checkIfCorrect = (form, correctAnswers) => {
-  const checkedInputs = form.querySelectorAll('input:checked');
+const checkIfCorrect = (form, question) => {
+  console.log(form.elements);
+  /* const checkedInputs = form.querySelectorAll('input:checked');
   if (checkedInputs.length !== correctAnswers.size) {
     return false;
   }
@@ -19,7 +20,7 @@ const checkIfCorrect = (form, correctAnswers) => {
       return false;
     }
   }
-  return true;
+  return true;*/
 };
 
 class Genre extends AbstractView {
@@ -29,14 +30,13 @@ class Genre extends AbstractView {
   }
 
   getMarkup() {
-    const answersMarkup = [];
-    for (let answer of this.data.answers.values()) {
-      answersMarkup.push(genAnswerMarkup(answer));
-    }
+    const answersMarkup = this.data.answers.map((answer, index) =>{
+      return genAnswerMarkup(answer, index);
+    }).join('');
     return `<section class="main main--level main--level-genre">
-        ${title(this.data.title)}
+        ${title(this.data.question)}
         <form class="genre">
-          ${answersMarkup.join('')}
+          ${answersMarkup}
           <button class="genre-answer-send" type="submit" disabled>Ответить</button>
         </form>
       </section>`;
@@ -54,7 +54,7 @@ class Genre extends AbstractView {
     });
     this.button.addEventListener('click', (e) => {
       e.preventDefault();
-      if (checkIfCorrect(this.form, this.data.correct)) {
+      if (checkIfCorrect(this.form, this.data)) {
         this._onAnswer(true);
       } else {
         this._onAnswer(false);
