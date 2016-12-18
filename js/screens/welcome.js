@@ -1,4 +1,4 @@
-import Application from '../application';
+import Application from '../modules/application';
 import AbstractView from './common';
 import {logo, mainTitle} from '../modules/templates';
 

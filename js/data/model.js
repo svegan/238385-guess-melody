@@ -10,6 +10,18 @@ class Model {
     this._state = state;
   }
 
+  set questionsAmount(amount) {
+    this._state.totalQues = amount;
+  }
+
+  set questions(questions) {
+    this._state.questions = questions;
+  }
+
+  get questions() {
+    return this._state.questions;
+  }
+
   get state() {
     return this._state;
   }

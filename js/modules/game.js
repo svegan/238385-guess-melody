@@ -1,21 +1,25 @@
-import Application from '../application';
-import model from '../data/model';
-import {renderUI} from './utils';
-import {questions} from '../data/game';
+import {Application, renderUI} from './modules';
+import {gameData, model} from '../data/data';
 import {artist, genre} from '../screens/screens';
 
+const queTypes = gameData.questions.types;
+
 class GamePresenter {
-  constructor(GameModel) {
+  constructor(questions, GameModel) {
     this.data = GameModel;
-    this.content = this.createLevel(this.data.currentQuestion);
+    this.data.questions = questions;
+    this.data.questionsAmount = this.data.questions.length;
   }
 
   startGame() {
+    this.data.restart();
+    this.content = this.createLevel(this.data.currentQuestion);
     this.content.onAnswer = this.answer.bind(this);
     this.updateView(this.content);
   }
 
   changeQuestion() {
+    // console.log(this.data.state);
     if (this.data.nextQue()) {
       const que = this.createLevel(this.data.currentQuestion);
       que.onAnswer = this.answer.bind(this);
@@ -27,11 +31,12 @@ class GamePresenter {
   }
 
   createLevel(questionNumber) {
-    switch (questions[questionNumber].type) {
-      case 'artist':
-        return artist(questions[questionNumber], this.data.time);
-      case 'genre':
-        return genre(questions[questionNumber]);
+    switch (this.data.questions[questionNumber].type) {
+      case queTypes.ARTIST:
+        return artist(this.data.questions[questionNumber], this.data.time);
+      case queTypes.GENRE:
+        // console.log(this.data.questions[questionNumber]);
+        return genre(this.data.questions[questionNumber]);
       default:
         return false;
     }
@@ -71,20 +76,13 @@ class GamePresenter {
     renderUI(que.elem);
   }
 
-  restart() {
-    this.data.restart();
-    this.content = this.createLevel(this.data.currentQuestion);
-    this.startGame();
-  }
-
   endGame() {
     Application.showResult(this.data.result, this.data.initTime);
   }
 }
 
-const game = new GamePresenter(model);
-
-export default () => {
-  game.restart();
+export default (questions) => {
+  const game = new GamePresenter(questions, model);
+  game.startGame();
   return game.content.elem;
 };
