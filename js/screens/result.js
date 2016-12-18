@@ -1,6 +1,5 @@
-import Application from '../application';
 import AbstractView from './common';
-import {logo, title} from '../modules/templates';
+import {Application, logo, title} from '../modules/modules';
 
 const compareFn = (result, results, initTime) => {
   const newResults = results.slice(0);
@@ -25,8 +24,8 @@ class Result extends AbstractView {
   constructor(data) {
     super();
     this.content = data.content;
-    this.data = data.result;
-    this.report = compareFn(data.result, data.results, data.initTime);
+    this.data = data.currResult;
+    this.report = compareFn(data.currResult, data.results, data.initTime);
   }
 
   getMarkup() {
@@ -38,6 +37,7 @@ class Result extends AbstractView {
       <span role="button" tabindex="0" class="main-replay">Сыграть ещё раз</span>
     </section>`;
   }
+
   bindHandlers() {
     this.replay = this.elem.querySelector('.main-replay');
     this.replay.addEventListener('click', replay);

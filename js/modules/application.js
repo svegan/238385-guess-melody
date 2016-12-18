@@ -1,8 +1,6 @@
-import game from './modules/game';
-import {welcome, result} from './screens/screens';
-import {renderUI} from './modules/utils';
-import gameData from './data/game';
-import results from './data/results';
+import {game, renderUI} from './modules';
+import {welcome, result} from '../screens/screens';
+import {gameData, results} from '../data/data';
 
 const content = gameData.content;
 let questions;
@@ -22,5 +20,3 @@ export default class Application {
     questions = data;
   }
 }
-
-export {renderUI, gameData};

@@ -1,4 +1,4 @@
-import Application from './application';
+import {Application} from './modules/modules';
 import 'whatwg-fetch';
 
 window.fetch('https://intensive-ecmascript-server-qybmlbpxoi.now.sh/guess-melody/questions').

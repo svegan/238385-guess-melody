@@ -1,14 +1,12 @@
 import AbstractView from './common';
-import {mainTitle, timer} from '../modules/templates';
-import Timer from '../modules/timer';
+import {mainTitle, timerMarkup, Timer, player} from '../modules/modules';
 
 const genAnswerMarkup = (item, index) => {
-  let curIndex = index + 1;
   return `<div class="main-answer-wrapper">
-  <input class="main-answer-r" type="radio" id="answer-${curIndex}" name="answer" value="val-${curIndex}" />
-  <label class="main-answer" for="answer-${curIndex}">
-  <img class="main-answer-preview" src="">
-  ${item}
+  <input class="main-answer-r" type="radio" id="answer-${index}" name="answer" value="val-${index}" />
+  <label class="main-answer" for="answer-${index}">
+  <img class="main-answer-preview" src="${item.image.url}" width="${item.image.width}" height="${item.image.height}">
+  ${item.title}
   </label>
   </div>`;
 };
@@ -18,14 +16,15 @@ class Artist extends AbstractView {
     super();
     this.data = data;
     this.initTime = time;
+    this.correct = data.answers.findIndex((answer) => answer.isCorrect);
   }
 
   getMarkup() {
     return `<section class="main main--level main--level-artist">
-        ${timer}
+        ${timerMarkup}
         <div class="main-wrap">
           <div class="main-timer"></div>
-          ${mainTitle(this.data.title)}
+          ${mainTitle(this.data.question)}
           <div class="player-wrapper"></div>
           <form class="main-list">
             ${this.data.answers.map(genAnswerMarkup).join('')}
@@ -37,6 +36,7 @@ class Artist extends AbstractView {
   set onAnswer(handler) {
     this._onAnswer = handler;
     this._applyTimer();
+    this._applyPlayer();
   }
 
   bindHandlers() {
@@ -45,7 +45,8 @@ class Artist extends AbstractView {
       this.timerObj.stop();
       const time = this.timerObj.getLeftTime();
       this.timerObj.remove();
-      if (form[this.data.correct - 1].checked) {
+      this.deletePlayer();
+      if (form.elements.answer[this.correct].checked) {
         this._onAnswer(true, time);
       } else {
         this._onAnswer(false, time);
@@ -60,6 +61,11 @@ class Artist extends AbstractView {
       this._onAnswer(false, 'reset');
     });
     this.timerObj.start();
+  }
+
+  _applyPlayer() {
+    const playerContainer = this.elem.querySelector('.player-wrapper');
+    this.deletePlayer = player(playerContainer, this.data.src, true, false);
   }
 }
 

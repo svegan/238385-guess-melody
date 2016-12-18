@@ -4,7 +4,7 @@ const mainTitle = (text) => `<h2 class="title main-title">${text}</h2>`;
 
 const title = (text) => `<h2 class="title">${text}</h2>`;
 
-const timer = `<svg xmlns="http://www.w3.org/2000/svg" class="timer" viewBox="0 0 780 780">
+const timerMarkup = `<svg xmlns="http://www.w3.org/2000/svg" class="timer" viewBox="0 0 780 780">
   <circle
     cx="390" cy="390" r="370"
     class="timer-line"
@@ -17,4 +17,4 @@ const timer = `<svg xmlns="http://www.w3.org/2000/svg" class="timer" viewBox="0 
   </div>
 </svg>`;
 
-export {logo, mainTitle, title, timer};
+export {logo, mainTitle, title, timerMarkup};

@@ -1,5 +1,5 @@
 import AbstractView from './common';
-import {title} from '../modules/templates';
+import {title, player} from '../modules/modules';
 
 const genAnswerMarkup = (answer, index) => {
   return `<div class="genre-answer">
@@ -9,18 +9,22 @@ const genAnswerMarkup = (answer, index) => {
   </div>`;
 };
 
-const checkIfCorrect = (form, question) => {
-  console.log(form.elements);
-  /* const checkedInputs = form.querySelectorAll('input:checked');
-  if (checkedInputs.length !== correctAnswers.size) {
+const checkIfCorrect = (checkboxes, question) => {
+  const correctAnswers = [];
+  question.answers.forEach((answer, index) => {
+    if (answer.genre === question.genre) {
+      correctAnswers.push(index);
+    }
+  });
+  if ((Array.prototype.filter.call(checkboxes, (elem) => elem.checked)).length !== correctAnswers.length) {
     return false;
   }
-  for (let input of checkedInputs) {
-    if (!correctAnswers.has(input.id)) {
+  for (let answer of correctAnswers) {
+    if (!checkboxes[answer].checked) {
       return false;
     }
   }
-  return true;*/
+  return true;
 };
 
 class Genre extends AbstractView {
@@ -44,6 +48,7 @@ class Genre extends AbstractView {
 
   set onAnswer(handler) {
     this._onAnswer = handler;
+    this._applyPlayer();
   }
 
   bindHandlers() {
@@ -54,11 +59,20 @@ class Genre extends AbstractView {
     });
     this.button.addEventListener('click', (e) => {
       e.preventDefault();
-      if (checkIfCorrect(this.form, this.data)) {
+      this.players.forEach((deletePlayer) => deletePlayer());
+      if (checkIfCorrect(this.form.elements.answer, this.data)) {
         this._onAnswer(true);
       } else {
         this._onAnswer(false);
       }
+    });
+  }
+
+  _applyPlayer() {
+    const playerContainers = this.elem.querySelectorAll('.player-wrapper');
+    this.players = [];
+    this.data.answers.forEach((answer, index) => {
+      this.players.push(player(playerContainers[index], answer.src));
     });
   }
 }

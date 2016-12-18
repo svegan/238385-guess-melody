@@ -1,6 +1,5 @@
-import Application, {renderUI, gameData} from '../application';
-// import gameData from '../data/game';
-import model from '../data/model';
+import {Application, renderUI} from './modules';
+import {gameData, model} from '../data/data';
 import {artist, genre} from '../screens/screens';
 
 const queTypes = gameData.questions.types;
@@ -10,15 +9,17 @@ class GamePresenter {
     this.data = GameModel;
     this.data.questions = questions;
     this.data.questionsAmount = this.data.questions.length;
-    this.content = this.createLevel(this.data.currentQuestion);
   }
 
   startGame() {
+    this.data.restart();
+    this.content = this.createLevel(this.data.currentQuestion);
     this.content.onAnswer = this.answer.bind(this);
     this.updateView(this.content);
   }
 
   changeQuestion() {
+    // console.log(this.data.state);
     if (this.data.nextQue()) {
       const que = this.createLevel(this.data.currentQuestion);
       que.onAnswer = this.answer.bind(this);
@@ -75,12 +76,6 @@ class GamePresenter {
     renderUI(que.elem);
   }
 
-  restart() {
-    this.data.restart();
-    this.content = this.createLevel(this.data.currentQuestion);
-    this.startGame();
-  }
-
   endGame() {
     Application.showResult(this.data.result, this.data.initTime);
   }
@@ -88,6 +83,6 @@ class GamePresenter {
 
 export default (questions) => {
   const game = new GamePresenter(questions, model);
-  game.restart();
+  game.startGame();
   return game.content.elem;
 };
