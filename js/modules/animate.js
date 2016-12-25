@@ -5,12 +5,15 @@ export const getAnimation = (step, stepDuration, steps) => ({
 });
 
 
-export default (animation, callback, callbackEnd) => {
+export default (animation, callback, updateTime, callbackEnd) => {
   const interval = setInterval(() => {
     const nextStep = animation.step + 1;
     if (nextStep <= animation.steps) {
       animation = getAnimation(nextStep, animation.stepDuration, animation.steps);
       callback(animation);
+      if (typeof updateTime === 'function') {
+        updateTime();
+      }
     } else {
       stopFn();
       if (typeof callbackEnd === 'function') {

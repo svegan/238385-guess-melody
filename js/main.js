@@ -1,7 +1,8 @@
 import {Application} from './modules/modules';
+import {gameData} from './data/data';
 import 'whatwg-fetch';
 
-window.fetch('https://intensive-ecmascript-server-qybmlbpxoi.now.sh/guess-melody/questions').
+window.fetch(gameData.serverUrls.questions).
     then((response) => {
       if (response.status === 200) {
         return response;
