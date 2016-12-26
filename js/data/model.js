@@ -27,17 +27,17 @@ class Model {
   }
 
   get time() {
-    return this.state.leftTime;
+    return this._state.leftTime;
   }
 
   get currentQuestion() {
-    return this.state.currentQue;
+    return this._state.currentQue;
   }
 
   get result() {
     return {
-      leftTime: this.state.leftTime,
-      correctQues: this.state.correctQues
+      time: this._state.leftTime,
+      answers: this._state.correctQues
     };
   }
 
@@ -46,12 +46,12 @@ class Model {
   }
 
   restart() {
-    this.state = initState;
+    this._state = initState;
   }
 
   nextQue() {
     try {
-      this.state = setQue(this.state, this.state.currentQue + 1);
+      this._state = setQue(this._state, this._state.currentQue + 1);
       return true;
     } catch (e) {
       return false;
@@ -60,7 +60,7 @@ class Model {
 
   rightAnswer() {
     try {
-      this.state = setCorrectAnswer(this.state, this.state.correctQues + 1);
+      this._state = setCorrectAnswer(this._state, this._state.correctQues + 1);
       return true;
     } catch (e) {
       return false;
@@ -76,9 +76,9 @@ class Model {
     }
   }
 
-  updateTime(time) {
+  timerTick() {
     try {
-      this._state = setTime(this._state, time);
+      this._state = setTime(this._state, this.time - 1);
       return true;
     } catch (e) {
       return false;

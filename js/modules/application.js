@@ -1,8 +1,9 @@
-import {game, renderUI} from './modules';
-import {welcome, result} from '../screens/screens';
-import {gameData, results} from '../data/data';
+import {game, renderUI, uploadResult, downloadResults} from './modules';
+import {welcome, report} from '../screens/screens';
+import {gameData} from '../data/data';
 
 const content = gameData.content;
+const url = gameData.serverUrls.results;
 let questions;
 
 export default class Application {
@@ -12,8 +13,15 @@ export default class Application {
   static showGame() {
     renderUI(game(questions));
   }
-  static showResult(currResult, initTime) {
-    renderUI(result({content, currResult, results, initTime}).elem);
+  static showResult(result, initTime) {
+    uploadResult(url, result).
+        then(() => downloadResults(url)).
+        then((results) => {
+          renderUI(report({content, results, initTime}).elem);
+        }).
+        catch((err) => {
+          throw new Error('Ошибка обработки результатов');
+        });
   }
 
   static set questions(data) {

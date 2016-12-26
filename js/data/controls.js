@@ -6,7 +6,7 @@ const setLifes = (data, num) => {
 };
 
 const setQue = (data, num) => {
-  if (num < 0 || num > data.totalQues) {
+  if (num < 0 || num >= data.totalQues) {
     throw new Error(`Num shouldn\'t be more than ${data.totalQues} or less than 0`);
   }
   return Object.assign({}, data, {currentQue: num});
