@@ -15,7 +15,20 @@ class Artist extends AbstractView {
   constructor(data) {
     super();
     this.data = data;
-    this.correct = data.answers.findIndex((answer) => answer.isCorrect);
+    this._onFormChange = this._onFormChange.bind(this);
+    this.correct = -1;
+    data.answers.some((answer, index) => {
+      if (answer.isCorrect) {
+        this.correct = index;
+        return true;
+      }
+      return false;
+    });
+  }
+
+  set onAnswer(handler) {
+    this._onAnswer = handler;
+    this._applyPlayer();
   }
 
   getMarkup() {
@@ -31,21 +44,24 @@ class Artist extends AbstractView {
       </section>`;
   }
 
-  set onAnswer(handler) {
-    this._onAnswer = handler;
-    this._applyPlayer();
-  }
 
   bindHandlers() {
-    const form = this.elem.querySelector('.main-list');
-    form.addEventListener('change', (e) => {
-      this.deletePlayer();
-      if (form.elements.answer[this.correct].checked) {
-        this._onAnswer(true);
-      } else {
-        this._onAnswer(false);
-      }
-    }, true);
+    this.form = this.elem.querySelector('.main-list');
+    this.form.addEventListener('change', this._onFormChange, true);
+  }
+
+  clearHandlers() {
+    this.form.removeEventListener('change', this._onFormChange, true);
+    this.form = null;
+  }
+
+  _onFormChange(e) {
+    this.deletePlayer();
+    if (this.form.elements.answer[this.correct].checked) {
+      this._onAnswer(true);
+    } else {
+      this._onAnswer(false);
+    }
   }
 
   _applyPlayer() {

@@ -51,7 +51,8 @@ gulp.task('scripts', function () {
         loaders: [{
             test: /\.js$/,
             exclude: ['node_modules', 'build'],
-            loader: 'babel-loader?presets[]=es2015'
+            loader: 'babel-loader?presets[]=es2015',
+            plugins: ['transform-runtime']
       }]
     }}))
     .pipe(gulp.dest('build/js/'));

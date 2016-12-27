@@ -2,14 +2,11 @@ import Application from '../modules/application';
 import AbstractView from './common';
 import {logo, mainTitle} from '../modules/templates';
 
-const play = () => {
-  Application.showGame();
-};
-
 class Welcome extends AbstractView {
   constructor(data) {
     super();
     this.data = data;
+    this._play = this._play.bind(this);
   }
 
   getMarkup() {
@@ -23,11 +20,16 @@ class Welcome extends AbstractView {
 
   bindHandlers() {
     this.playButton = this.elem.querySelector('.main-play');
-    this.playButton.addEventListener('click', play);
+    this.playButton.addEventListener('click', this._play);
   }
 
   clearHandlers() {
-    this.playButton.removeEventListener('click', play);
+    this.playButton.removeEventListener('click', this._play);
+    this.playButton = null;
+  }
+
+  _play() {
+    Application.showGame();
   }
 }
 

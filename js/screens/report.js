@@ -1,15 +1,12 @@
 import AbstractView from './common';
 import {Application, logo, title, compareFn} from '../modules/modules';
 
-const replay = () => {
-  Application.showGame();
-};
-
 class Result extends AbstractView {
   constructor(data) {
     super();
     this.content = data.content;
     this.report = compareFn(data.results, data.initTime);
+    this._replay = this._replay.bind(this);
   }
 
   getMarkup() {
@@ -24,11 +21,16 @@ class Result extends AbstractView {
 
   bindHandlers() {
     this.replay = this.elem.querySelector('.main-replay');
-    this.replay.addEventListener('click', replay);
+    this.replay.addEventListener('click', this._replay);
   }
 
   clearHandlers() {
-    this.replay.removeEventListener('click', replay);
+    this.replay.removeEventListener('click', this._replay);
+    this.replay = null;
+  }
+
+  _replay() {
+    Application.showGame();
   }
 }
 

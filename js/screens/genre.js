@@ -31,6 +31,13 @@ class Genre extends AbstractView {
   constructor(data) {
     super();
     this.data = data;
+    this._onButtonClick = this._onButtonClick.bind(this);
+    this._onFormClick = this._onFormClick.bind(this);
+  }
+
+  set onAnswer(handler) {
+    this._onAnswer = handler;
+    this._applyPlayer();
   }
 
   getMarkup() {
@@ -46,26 +53,33 @@ class Genre extends AbstractView {
       </section>`;
   }
 
-  set onAnswer(handler) {
-    this._onAnswer = handler;
-    this._applyPlayer();
-  }
 
   bindHandlers() {
     this.form = this.elem.querySelector('form.genre');
     this.button = this.form.querySelector('.genre-answer-send');
-    this.form.addEventListener('click', () => {
-      this.button.disabled = this.form.querySelectorAll('input[name="answer"]:checked').length === 0;
-    });
-    this.button.addEventListener('click', (e) => {
-      e.preventDefault();
-      this.players.forEach((deletePlayer) => deletePlayer());
-      if (checkIfCorrect(this.form.elements.answer, this.data)) {
-        this._onAnswer(true);
-      } else {
-        this._onAnswer(false);
-      }
-    });
+    this.form.addEventListener('click', this._onFormClick);
+    this.button.addEventListener('click', this._onButtonClick);
+  }
+
+  clearHandlers() {
+    this.form.removeEventListener('click', this._onFormClick);
+    this.button.removeEventListener('click', this._onButtonClick);
+    this.form = null;
+    this.button = null;
+  }
+
+  _onFormClick() {
+    this.button.disabled = this.form.querySelectorAll('input[name="answer"]:checked').length === 0;
+  }
+
+  _onButtonClick(e) {
+    e.preventDefault();
+    this.players.forEach((deletePlayer) => deletePlayer());
+    if (checkIfCorrect(this.form.elements.answer, this.data)) {
+      this._onAnswer(true);
+    } else {
+      this._onAnswer(false);
+    }
   }
 
   _applyPlayer() {
