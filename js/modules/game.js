@@ -9,38 +9,39 @@ class GamePresenter {
     this.data = GameModel;
     this.data.questions = questions;
     this.data.questionsAmount = this.data.questions.length;
-    this.tick = this.tick.bind(this);
-    this.endGame = this.endGame.bind(this);
+    this._tick = this._tick.bind(this);
+    this._endGame = this._endGame.bind(this);
   }
 
   startGame() {
     this.data.restart();
-    this.startTimer();
-    this.content = this.createLevel(this.data.currentQuestion);
-    this.content.onAnswer = this.answer.bind(this);
-    this.updateView(this.content);
+    this._startTimer();
+    this.content = this._createLevel(this.data.currentQuestion);
+    this.content.onAnswer = this._answer.bind(this);
+    this._updateView(this.content);
   }
 
-  startTimer() {
-    this.timer = createTimer(this.data.time, this.tick, this.endGame);
+  _startTimer() {
+    this.timer = createTimer(this.data.time, this._tick, this._endGame);
   }
 
-  tick() {
+  _tick() {
     this.data.timerTick();
   }
 
-  changeQuestion() {
-    if (this.data.nextQue()) {
-      const que = this.createLevel(this.data.currentQuestion);
-      que.onAnswer = this.answer.bind(this);
-      this.updateView(que);
+  _changeQuestion() {
+    const isNextQueExist = this.data.nextQue();
+    if (isNextQueExist) {
+      const que = this._createLevel(this.data.currentQuestion);
+      que.onAnswer = this._answer.bind(this);
+      this._updateView(que);
       this.content = que;
     } else {
-      this.endGame();
+      this._endGame();
     }
   }
 
-  createLevel(questionNumber) {
+  _createLevel(questionNumber) {
     switch (this.data.questions[questionNumber].type) {
       case queTypes.ARTIST:
         return artist(this.data.questions[questionNumber]);
@@ -51,7 +52,7 @@ class GamePresenter {
     }
   }
 
-  answer(correct) {
+  _answer(correct) {
     switch (correct) {
       case true:
         this.data.rightAnswer();
@@ -63,17 +64,17 @@ class GamePresenter {
         return;
     }
     if (!this.data.isGameOver()) {
-      this.changeQuestion();
+      this._changeQuestion();
       return;
     }
-    this.endGame();
+    this._endGame();
   }
 
-  updateView(que) {
+  _updateView(que) {
     renderUI(que.elem);
   }
 
-  endGame() {
+  _endGame() {
     removeTimer(this.timer);
     renderUI(loading.elem);
     Application.showResult(this.data.result, this.data.initTime);

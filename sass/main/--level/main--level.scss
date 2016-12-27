@@ -40,6 +40,9 @@ $preview-spacing: 11px;
   position: relative;
   text-align: center;
   width: $preview-size;
+  img{
+    pointer-events: none;
+  }
 }
 
 .main-answer:hover {

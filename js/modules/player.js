@@ -44,11 +44,14 @@ const destroyPlayer = (element, state) => {
   return true;
 };
 
+const template = document.querySelector('template');
+const templateContainer = 'content' in template ? template.content : template;
+const playerContainer = templateContainer.querySelector('.player');
 
 export default (element, file, autoplay = false, controllable = true) => {
   let state = {};
 
-  const content = document.querySelector('template').content.querySelector('.player').cloneNode(true);
+  const content = playerContainer.cloneNode(true);
   const player = content.querySelector('audio');
   const button = content.querySelector('button');
 
